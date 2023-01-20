@@ -166,6 +166,7 @@ cmp rax,rbx
 ```
 
 **Wat zit er in RAX en RBX na het uitvoeren van bovenstaande code?**
+
 ![](2.png)
 
 Hetzelfde. Omwille van de distributiviteit en communicativiteit van de AND-operatie met de XOR-operatie.
