@@ -26,7 +26,7 @@ loop: mov @R0, #00 ; 7F -> 1 =0
 * ```clr A```: zet bits op 0
 * ```clr P1.6```: zet bit op 0
 * ```djnz R0,label```: decrement and jump
-* ```djnz R0,$```: blijven incrementen tot 0, eens 0 naar volgende regel
+* ```djnz R0,$```: blijven decrementeren tot 0, eens 0 naar volgende regel
 * ```jb,label```: jump als bit op 1 staat
 * ```jnb, label```: jump als bit op 0 staat
 * ```rl```: rotate left -> alle bits 1 naar links, 1e naar laatste
