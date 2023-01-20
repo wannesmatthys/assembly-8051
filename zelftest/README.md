@@ -91,17 +91,17 @@ jmp loop
 
 org 0080H
 
-loop:jb P1.0,check_acc
-		jnb P1.7,check_acc
-		mov C,P1.0
-		anl C,P1.7 ; C=P1.0&P1.7
-		jmp loop
-
+loop:	
+	jb P1.0,check_acc
+  	jnb P1.7,check_acc
+	mov C,P1.0	
+	anl C,P1.7 ; C=P1.0&P1.7
+	jmp loop
 check_acc:
-				jb Acc.7,einde
-				mov C,P1.0
-				anl C,P1.7
-				jmp loop
+	jb Acc.7,einde
+	mov C,P1.0
+	anl C,P1.7
+	jmp loop
 einde:jmp $
 ```
 
@@ -134,21 +134,23 @@ jmp main
 
 org 0080H
 
-main:mov R0,#01H  ; 0000 0001
-		mov R1,#80H	 ; 1000 0000
-loop:mov A,R0
-		orl A,R1
-		cpl A
-		mov P1,A
-		
-		mov A,R0
-		rl A
-		mov R0,A
+main:
+	mov R0,#01H  ; 0000 0001
+	mov R1,#80H	 ; 1000 0000
+loop:
+	mov A,R0
+	orl A,R1
+	cpl A
+	mov P1,A
 
-		mov A,R1
-		rr A
-		mov R1,A
-		jmp loop
+	mov A,R0
+	rl A
+	mov R0,A
+
+	mov A,R1
+	rr A
+	mov R1,A
+	jmp loop
 ```
 
 ## Vraag 8
