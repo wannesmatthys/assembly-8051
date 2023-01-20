@@ -217,10 +217,10 @@ Bij TCON heb je bits om je timer te starten, bits om je timer overflow te gaan b
 Er is slechts 1 antwoord!
 
 ```asm
-clr C
 rrc A
 clr C
 rrc A
+clr C
 ```
 
 ## Vraag 13
