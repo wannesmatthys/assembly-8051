@@ -210,7 +210,7 @@ Als je bijvoorbeeld P0/P1 gebruikt, en je gebruikt enkel een paar bits van P0/P1
 Bij TCON heb je bits om je timer te starten, bits om je timer overflow te gaan bekijken, bits om interrupt handling te doen. De bedoeling is niet om via een mov operatie deze bits te gaan aanpassen, daarom moet je dus bitaddreseerbaar werken voor zulke systemen.
 
 ## Vraag 12
-**Geef hieronder de verschillende mogelijkheden om op de C8051F120 met één instructie de inhoud van de accumulator op nul te plaatsen ongeacht wat de inhoud vooraf was**
+**Hoe kan je zo efficiënt mogelijk een getal dat zich in de accumulator bevindt delen door 4?**
 
 *Vraag van 2 jaar geleden*
 
