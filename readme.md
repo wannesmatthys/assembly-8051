@@ -1,6 +1,6 @@
 # Summary Computerhardware
 
-## Start of every program
+## Start van ieder programma
 Leeg het geheugen bij de start van ieder programma.
 
 ```asm
@@ -10,16 +10,15 @@ jmp main
 
 org 0080H
 
-main:
-    ; do stuff
-loop: mov @R0, #00 ; 7F -> 1 =0
-      djnz R0,loop ; 0 = 0
+main:mov R0,#7FH
+loop:mov @R0,#00     
+     djnz R0, loop
       ; do stuff
       jmp $
 ```
 
 ## Basic commands
-* ```cpl```: eentjes en nulletjes draaien, ```cpl P1``` kan niet! Waarde in acuumulator steken.
+* ```cpl```: eentjes en nulletjes draaien, ```cpl P1``` kan niet! Waarde in accumulator steken.
 * ```mov src, dest```: waarde van src in dest steken (kopieren!!)
 * ```setb P1.6```: zet bit op 1
 * ```cpl P1.6```: wissel bits
@@ -30,12 +29,16 @@ loop: mov @R0, #00 ; 7F -> 1 =0
 * ```jb,label```: jump als bit op 1 staat
 * ```jnb, label```: jump als bit op 0 staat
 * ```rl```: rotate left -> alle bits 1 naar links, 1e naar laatste
+* ```rrl```: zelfde als rl, maar minst beduidende bit wordt opgeslagen in carry
 * ```rr```: rotate right -> alle bits 1 naar rechts, laatste naar eerste
+* ```rrc```: zelfde als rotate right, maar meest beduidende bit wordt opgeslagen in carry
 * ```cjne R2,#3,label```: compare and jump if not equal
 * ```orl A,R2```: OR logical
 * ```anl A,R2```: AND logical
 * ```swap A```: 4 times rl
 * ```add A,R2```: R2 bij A optellen
+* ```jnc label```: jump als carry = 0
+* ```jc label```: jump als carry = 1
 
 ## Vertragingslussen
 ```asm
@@ -169,3 +172,22 @@ extern0:
     ; do stuff
     reti
 ```
+
+## Operations
+
+### Kleiner en groter dan
+```asm
+CJNE
+PC = PC + 3
+IF A <> immediate
+  PC = PC + offset
+IF A < immediate
+  C = 1
+ELSE
+  C = 0
+```
+Aan de hand van de cjne instructie en de carrybit kunnen we dus checken of iets groter of kleiner is. De carry = 1, het linkse is kleiner dan het rechtste. De carry = 0, het rechste is groter of gelijk aan het linkse.
+
+## C naar assembleertaal
+Bij het omzetten van C naar assembleertaal is het belangrijk om te weten of je eenprogramma moet schrijven dan wel een subroutine. Bij een subroutine moet voor de aanroep de volledige CPU-context (i.e. alle werkregisters dus) naar de stack worden gekopieerd en op het einde van de subroutine terug worden gehaald. Het kan ook
+eenvoudiger door bv. enkel de registers die binnen de subroutine gebruikt worden te bewaren en later terug te zetten. Het kan nooit de bedoeling zijn dat een subroutine een werkregister van inhoud wijzigt. Zowel voor het schrijven van een programma als voor het schrijven van een subroutine moet je ook weten dat lokale variabelen zich op de stapel bevinden.
