@@ -1,7 +1,8 @@
 # Summary Computerhardware
 
 ## Start of every program
-TODO: Leeg het geheugen bij de start van ieder programma.
+Leeg het geheugen bij de start van ieder programma.
+
 ```asm
 org 0000H
 
@@ -11,6 +12,10 @@ org 0080H
 
 main:
     ; do stuff
+loop: mov @R0, #00 ; 7F -> 1 =0
+      djnz R0,loop ; 0 = 0
+      ; do stuff
+      jmp $
 ```
 
 ## Basic commands
@@ -30,7 +35,8 @@ main:
 * ```orl A,R2```: OR logical
 * ```anl A,R2```: AND logical
 * ```swap A```: 4 times rl
-* ``` 
+* ```add A,R2```: R2 bij A optellen
+
 ## Vertragingslussen
 ```asm
 org 0000H
@@ -65,7 +71,7 @@ mov A,@R0
 ```
 
 ## Timers
-De simulator bevat slechts twee timers en de klokfrequentie bedraagt 12 MHz (intern gedeeld door 12). Beide zijn 16-bit timers. Van FFFF naar 0000 zal overflow veroorzaken. Als het hexadecimaal getal begint met een letter, voegen we een 0 toe!
+De simulator bevat slechts twee timers en de klokfrequentie bedraagt 12 MHz (intern gedeeld door 12). Beide zijn 16-bit timers. Van FFFF naar 0000 zal overflow veroorzaken. Als het hexadecimaal getal begint met een letter, voegen we een 0 toe! Indien je interval gevraagd wordt in Hz doen we een extra deling door 2. Vb (5Hz -> 1/5 /2 -> 1/10).
 
 ```asm
 mov TMOD,#01H
@@ -113,4 +119,53 @@ Vervolgens 0 - 51042, dan omzetten naar hexadecimaal.
 = FFFF FFFF FFFF 389E
 THx = 38
 TLx = 9E
+```
+
+## Interrupts
+Interrupts kan zowel met timers als knoppen. Indien je gebruik maakt van knoppen, open logical diagram, kijk waar INT0/INT1 naar wijzen en zet een knop op die waarde in de dynamical interface.
+
+Vanboven adressen declareren met labels.
+```asm
+org 0003H
+jmp extern0 ; interrupt 0
+
+org 0013H
+jmp extern 1 ; interrupt 1
+
+org 000BH
+jmp timer0
+
+org 001BH
+jmp timer1
+```
+
+In het main programma, activeren we de interruptlijnen.
+```asm
+main:
+    ; timers
+    setb EA
+    setb TR0
+    setb TR1
+
+    ; interrupt lijnen (knoppen)
+    setb EX0
+    setb EX1
+    setb IT0
+    setb IT1
+```
+
+De functies zelf eindigen we altijd met reti!
+```asm
+timer0:
+    clr TF0
+    mov TH0,#1CH
+    mov TL0,#23H
+    ; do stuff
+    reti
+
+extern0:
+    clr EX0 ; als je de knop wil uitschakelen na gebruik...
+    setb EX1 ; de andere knop inschakelen (soort toggling infeite...)
+    ; do stuff
+    reti
 ```
