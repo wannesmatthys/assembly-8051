@@ -2,7 +2,7 @@
 ;laag actief zijn (ttz. een 0 triggert de interrupt). Op de simulator kan je de interruptlijnen
 ;met knopjes verbinden en eens nagaan of je op die manier je reactiesnelheid kan meten.
 ;Dus de knop op INT0 start een timer, de knop INT1 stopt de timer en de tijd in tienden
-;van secondes toon je op de LED’s in BCD-notatie (15 betekent 15*0.1s of 1.5s). Op de
+;van secondes toon je op de LED’s in BCD - notatie (15 betekent 15 * 0.1s of 1.5s). Op de
 ;C8051F120 vergt dat meer werk omdat je eerst die interruptlijnen via de crossbar naar
 ;buiten moet brengen. Vervolgens kan je ook externe knoppen aansluiten om externe
 ;interrupts te veroorzaken.
@@ -28,37 +28,37 @@ org 0013H
 jmp extern1
 
 org 0080H
-
+	
 main:
 	setb EA
 	setb EX0
 	setb ET0
 	setb IT0
 	setb IT1
-	mov TMOD,#01H
-	mov R2,#0
+	mov TMOD, #01H
+	mov R2, #0
 	jmp $
-extern0:	mov TH0,#1CH
-			mov TL1,#23H
-			setb TR0
-			clr EX0
-			setb EX1
-			mov R2,#0
-			reti
+extern0: mov TH0, #1CH
+	mov TL1, #23H
+	setb TR0
+	clr EX0
+	setb EX1
+	mov R2, #0
+	reti
 extern1:clr TR0
-			clr EX1 
-			setb EX0
-			reti
-			 
-timer0:	clr TF0
-			mov TH0,#1CH
-			mov TL1,#23H
-			inc R2  
-       	mov A,R2
-       	mov B,#10
-       	div AB    
-       	swap A
-       	orl A,B
-       	cpl A 
-       	mov P1,A
-      	reti
+	clr EX1
+	setb EX0
+	reti
+	
+timer0: clr TF0
+	mov TH0, #1CH
+	mov TL1, #23H
+	inc R2
+	mov A, R2
+	mov B, #10
+	div AB
+	swap A
+	orl A, B
+	cpl A
+	mov P1, A
+	reti
