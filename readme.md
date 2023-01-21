@@ -211,3 +211,60 @@ mul AB
 Bij het omzetten van C naar assembleertaal is het belangrijk om te weten of je een programma moet schrijven of een subroutine. Bij een subroutine moet voor de aanroep de volledige CPU-context (i.e. alle werkregisters dus) naar de stack worden gekopieerd en op het einde van de subroutine terug worden gehaald. Het kan ook eenvoudiger door bv. enkel de registers die binnen de subroutine gebruikt worden te bewaren en later terug te zetten. Het kan nooit de bedoeling zijn dat een subroutine een werkregister van inhoud wijzigt. Zowel voor het schrijven van een programma als voor het schrijven van een subroutine moet je ook weten dat lokale variabelen zich op de stapel bevinden.
 
 Zie reeks 4 en 5.
+
+## 80x86 assembleertaal
+
+* ```lea eax, [...]```: Het adres van iets gaat laden en wegschrijven in een register. Om van het register een pointer te maken.
+
+* ```leave```: Hetzelfde als: de stackpointer gelijkstellen aan de    basepointer ==> je localvariable frame vernietigen. Nadien de basepointer van de stapel poppen. Staat altijd voor een ret. ==> Terechtkomen in het local variable frame van degene die je heeft aangeroepen.
+  ```asm
+  mov esp,ebp 
+  pop ebp
+  ```
+  
+
+* Aan een voorwaardelijke spronginstructie gaat altijd een test of cmp instructie aan vooraf. Het resultaat wordt weggegooid, het zijn instructies die noodzakelijk zijn om vlaggen te zetten.
+  ```asm
+  test eax, eax ; logische AND operatie tussen de 2 operanden
+  jne label
+  
+  ; ik zou dit vervangen door... We checken dus of de accumulator 1 of 0 is.
+  cmp eax,1 ; (eax-1)
+  jz label
+  ```
+
+* Indien er gebruik gemaakt worden van bibliotheken (scanf, printf...) moeten de stapel gealigneerd worden op veelvouden van 16.
+
+* Dit betekent dat er op het einde staat return 0. Als voor het afsluiten van ret de accumulator een waarde krijgt, is dit een return.
+  ```asm
+  mov eax, 0
+  ret
+  ```
+
+* Als je een functie binnenkomt, staat er een return adres op je stack.
+
+* ESP = de stackpointer
+
+* Indien je ```DWORD PTR``` tegenkomt, weet je dat het hokjes van 4 bytes zijn.
+
+* ```sub esp, 32```: 32 bytes vrijmaken in de stapel. 
+
+* EBP (basepointer) wijst naar het begin en de ESP (stackpointer) naar het einde.
+
+* ```mov [ebp-20], 3```: We gaan 3 wegschrijven naar het adres dat zich in ebp-20 bevindt.
+
+* Maakt gebruik van veelvouden van 16.
+
+* ```asm
+  cmp eax, DWORD PTR [ebp+12] ; verschil van eax en [ebp+12]
+  jl label  ; springen als het resultaat kleiner dan 0 is
+  jz label  ; springen als het resultaat groter dan is
+  jg label  ; jump greater
+  ``` 
+
+* ```asm
+  lea edx, [0] ; het adres van nul is nul, edx op 0 zetten. Een manier om een constante te definiëren.
+  lea edx, [0+eax*4] ; misbruik maken van lea instructie om een vermenigvuldiging te doen van 4 met de accumulator
+  ```
+
+* ```move eax, [eax]```: eax krijgt de inhoud waarnaar eax wijst. Pointer volgen.
