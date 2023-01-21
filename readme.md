@@ -188,6 +188,26 @@ ELSE
 ```
 Aan de hand van de cjne instructie en de carrybit kunnen we dus checken of iets groter of kleiner is. De carry = 1, het linkse is kleiner dan het rechtste. De carry = 0, het rechste is groter of gelijk aan het linkse.
 
+### Deling
+```asm
+move A,R2
+mov B,#10
+div AB
+```
+
+* A=R2/10 ==> meest beduidende BCD-cijfer
+* B=R2%10 ==> minst beduidend BCD-cijfer
+
+### Vermenigvuldiging
+```asm
+mul AB
+```
+* A = LSB product
+* B = MSB product
+
+
+
 ## C naar assembleertaal
-Bij het omzetten van C naar assembleertaal is het belangrijk om te weten of je eenprogramma moet schrijven dan wel een subroutine. Bij een subroutine moet voor de aanroep de volledige CPU-context (i.e. alle werkregisters dus) naar de stack worden gekopieerd en op het einde van de subroutine terug worden gehaald. Het kan ook
-eenvoudiger door bv. enkel de registers die binnen de subroutine gebruikt worden te bewaren en later terug te zetten. Het kan nooit de bedoeling zijn dat een subroutine een werkregister van inhoud wijzigt. Zowel voor het schrijven van een programma als voor het schrijven van een subroutine moet je ook weten dat lokale variabelen zich op de stapel bevinden.
+Bij het omzetten van C naar assembleertaal is het belangrijk om te weten of je een programma moet schrijven of een subroutine. Bij een subroutine moet voor de aanroep de volledige CPU-context (i.e. alle werkregisters dus) naar de stack worden gekopieerd en op het einde van de subroutine terug worden gehaald. Het kan ook eenvoudiger door bv. enkel de registers die binnen de subroutine gebruikt worden te bewaren en later terug te zetten. Het kan nooit de bedoeling zijn dat een subroutine een werkregister van inhoud wijzigt. Zowel voor het schrijven van een programma als voor het schrijven van een subroutine moet je ook weten dat lokale variabelen zich op de stapel bevinden.
+
+Zie reeks 4 en 5.
